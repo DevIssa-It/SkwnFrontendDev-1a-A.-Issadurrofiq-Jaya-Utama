@@ -891,6 +891,10 @@
     .nav-logo {
         font-size: var(--font-size-lg);
     }
+
+    .nav-logo img {
+        height: 28px;
+    }
     
     .nav-logo i {
         font-size: var(--font-size-xl);
