@@ -11,9 +11,6 @@ const App = {
         // Setup global event listeners
         this.setupGlobalListeners();
         
-        // Setup mobile menu
-        this.setupMobileMenu();
-        
         // Setup category toggle
         this.setupCategoryToggle();
         
@@ -40,11 +37,6 @@ const App = {
             this.handleResize();
         }, 300));
         
-        // Handle window scroll
-        $(window).on('scroll', Utils.throttle(() => {
-            this.handleScroll();
-        }, 100));
-        
         // Handle visibility change
         document.addEventListener('visibilitychange', () => {
             if (document.hidden) {
@@ -59,38 +51,6 @@ const App = {
             if (!$(this).hasClass('ajax-form')) {
                 e.preventDefault();
             }
-        });
-    },
-    
-    // Setup mobile menu
-    setupMobileMenu() {
-        const $hamburger = $('#hamburger');
-        const $navMenu = $('#navMenu');
-        const $overlay = $('#overlay');
-        const $navLinks = $('.nav-link');
-        
-        // Toggle mobile menu
-        $hamburger.on('click', function() {
-            $(this).toggleClass('active');
-            $navMenu.toggleClass('active');
-            $overlay.toggleClass('active');
-            $('body').toggleClass('menu-open');
-        });
-        
-        // Close menu when clicking overlay
-        $overlay.on('click', function() {
-            $hamburger.removeClass('active');
-            $navMenu.removeClass('active');
-            $(this).removeClass('active');
-            $('body').removeClass('menu-open');
-        });
-        
-        // Close menu when clicking nav link
-        $navLinks.on('click', function() {
-            $hamburger.removeClass('active');
-            $navMenu.removeClass('active');
-            $overlay.removeClass('active');
-            $('body').removeClass('menu-open');
         });
     },
     
@@ -222,10 +182,7 @@ const App = {
         }
     },
     
-    // Handle window scroll
-    handleScroll() {
-        // Additional scroll handling can be added here
-    },
+    // Handle window scroll events are handled by Navigation module
     
     // Setup newsletter form
     setupNewsletterForm() {

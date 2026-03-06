@@ -79,10 +79,6 @@ section .container {
     transition: all var(--transition-base);
 }
 
-.header.scrolled {
-    box-shadow: var(--shadow-md);
-}
-
 .navbar {
     height: var(--header-height);
     display: flex;

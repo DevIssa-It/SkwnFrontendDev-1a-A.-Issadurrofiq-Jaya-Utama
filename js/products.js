@@ -8,6 +8,8 @@ const Products = {
     
     // Initialize products
     async init() {
+        // Only run on pages that have the products grid
+        if ($('#productsGrid').length === 0) return;
         this.setupFilters();
         await this.loadProducts();
         await this.loadCategories();

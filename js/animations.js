@@ -141,103 +141,37 @@ const Animations = {
         $(element).fadeIn(duration);
     },
     
-    // Fade out element
-    fadeOut(element, duration = 300) {
-        $(element).fadeOut(duration);
-    },
-    
-    // Slide down element
-    slideDown(element, duration = 300) {
-        $(element).slideDown(duration);
-    },
-    
-    // Slide up element
-    slideUp(element, duration = 300) {
-        $(element).slideUp(duration);
-    },
-    
-    // Animate element with custom properties
-    animate(element, properties, duration = 300, easing = 'swing', callback = null) {
-        $(element).animate(properties, duration, easing, callback);
-    },
-    
-    // Show modal with animation
-    showModal(modalSelector) {
-        const $modal = $(modalSelector);
-        const $overlay = $('#overlay');
-        
-        $overlay.addClass('active');
-        $modal.addClass('active');
-        $('body').css('overflow', 'hidden');
-    },
-    
-    // Hide modal with animation
-    hideModal(modalSelector) {
-        const $modal = $(modalSelector);
-        const $overlay = $('#overlay');
-        
-        $overlay.removeClass('active');
-        $modal.removeClass('active');
-        $('body').css('overflow', '');
-    },
-    
-    // Stagger animation for multiple elements
-    staggerAnimation(elements, animationClass, delay = 100) {
-        $(elements).each(function(index) {
-            const element = this;
-            setTimeout(() => {
-                $(element).addClass(animationClass);
-            }, index * delay);
-        });
-    },
-    
-    // Loading animation
-    showLoading(container) {
-        $(container).html(`
-            <div class="loading-spinner">
-                <i class="fas fa-spinner fa-spin"></i>
-            </div>
-        `);
-    },
-    
-    // Hide loading
-    hideLoading(container) {
-        $(container).find('.loading-spinner').remove();
-    },
-    
-    // Skeleton loading
-    showSkeleton(container, type = 'card', count = 3) {
-        let skeletonHTML = '';
-        
-        for (let i = 0; i < count; i++) {
-            if (type === 'card') {
-                skeletonHTML += `
-                    <div class="skeleton skeleton-card"></div>
-                `;
-            } else if (type === 'text') {
-                skeletonHTML += `
-                    <div class="skeleton skeleton-text"></div>
-                `;
-            }
-        }
-        
-        $(container).html(skeletonHTML);
-    },
-    
-    // Pulsate effect
-    pulsate(element, duration = 500) {
-        $(element).addClass('pulse');
-        setTimeout(() => {
-            $(element).removeClass('pulse');
-        }, duration);
-    },
-    
     // Shake effect
     shake(element) {
         $(element).addClass('shake');
         setTimeout(() => {
             $(element).removeClass('shake');
         }, 500);
+    },
+
+    // Show loading skeleton inside a container
+    showLoading(container) {
+        const skeleton = Array(3).fill(
+            '<div style="flex:1;height:300px;background:#f0f0f0;border-radius:8px;"></div>'
+        ).join('');
+        $(container).html(`<div style="display:flex;gap:1rem;padding:1rem;">${skeleton}</div>`);
+    },
+
+    // Stagger animation class onto a set of elements
+    staggerAnimation(selector, animationClass, delay = 100) {
+        $(selector).each(function(index) {
+            setTimeout(() => {
+                $(this).addClass(animationClass);
+            }, index * delay);
+        });
+    },
+
+    // Pulsate effect
+    pulsate(element) {
+        $(element).addClass('pulsate');
+        setTimeout(() => {
+            $(element).removeClass('pulsate');
+        }, 600);
     }
 };
 
