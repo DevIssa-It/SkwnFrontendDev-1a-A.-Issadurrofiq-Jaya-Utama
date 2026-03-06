@@ -32,8 +32,43 @@ const Navigation = {
             $('.search-modal').removeClass('active');
         });
         
-        // Close menu when clicking nav link
-        $('.nav-link').on('click', () => {
+        // Dropdown parent link: always prevent navigation, toggle accordion on mobile
+        $('.has-dropdown > .nav-link').on('click', function(e) {
+            e.preventDefault();
+            if ($(window).width() < 992) {
+                $(this).closest('.has-dropdown').toggleClass('open');
+            }
+        });
+
+        // Dropdown item click: scroll to section + optionally select category
+        $('.nav-dropdown-link').on('click', function(e) {
+            e.preventDefault();
+            const target = $(this).attr('href');
+            const categoryIndex = $(this).data('category');
+
+            // Close mobile menu
+            if ($(window).width() < 992) {
+                $hamburger.removeClass('active');
+                $navMenu.removeClass('active');
+                $overlay.removeClass('active');
+                $('.has-dropdown').removeClass('open');
+            }
+
+            // Smooth scroll to target section
+            const $target = $(target);
+            if ($target.length) {
+                const headerHeight = $('#header').outerHeight();
+                $('html, body').animate({ scrollTop: $target.offset().top - headerHeight }, 600, 'swing', function() {
+                    // After scroll, trigger category selection if specified
+                    if (categoryIndex !== undefined) {
+                        $('.category-item').eq(categoryIndex).trigger('click');
+                    }
+                });
+            }
+        });
+
+        // Close menu when clicking regular nav link (non-dropdown)
+        $('.nav-link').not('.has-dropdown > .nav-link').on('click', () => {
             if ($(window).width() < 992) {
                 $hamburger.removeClass('active');
                 $navMenu.removeClass('active');
