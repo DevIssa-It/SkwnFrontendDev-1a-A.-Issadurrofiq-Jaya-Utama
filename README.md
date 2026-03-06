@@ -95,14 +95,8 @@ api: {
 {
   "id": "1",
   "name": "Modern Sofa",
-  "category": "Living Room",
   "price": "899.99",
-  "oldPrice": "1099.99",
-  "image": "https://picsum.photos/400/300",
-  "rating": "4.5",
-  "reviews": "128",
-  "badge": "Sale",
-  "description": "Comfortable modern sofa..."
+  "image": "https://picsum.photos/400/300"
 }
 ```
 
