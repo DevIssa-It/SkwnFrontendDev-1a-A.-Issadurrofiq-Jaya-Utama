@@ -11,6 +11,9 @@ const App = {
         // Setup global event listeners
         this.setupGlobalListeners();
         
+        // Setup mobile menu
+        this.setupMobileMenu();
+        
         // Setup category toggle
         this.setupCategoryToggle();
         
@@ -59,6 +62,38 @@ const App = {
         });
     },
     
+    // Setup mobile menu
+    setupMobileMenu() {
+        const $hamburger = $('#hamburger');
+        const $navMenu = $('#navMenu');
+        const $overlay = $('#overlay');
+        const $navLinks = $('.nav-link');
+        
+        // Toggle mobile menu
+        $hamburger.on('click', function() {
+            $(this).toggleClass('active');
+            $navMenu.toggleClass('active');
+            $overlay.toggleClass('active');
+            $('body').toggleClass('menu-open');
+        });
+        
+        // Close menu when clicking overlay
+        $overlay.on('click', function() {
+            $hamburger.removeClass('active');
+            $navMenu.removeClass('active');
+            $(this).removeClass('active');
+            $('body').removeClass('menu-open');
+        });
+        
+        // Close menu when clicking nav link
+        $navLinks.on('click', function() {
+            $hamburger.removeClass('active');
+            $navMenu.removeClass('active');
+            $overlay.removeClass('active');
+            $('body').removeClass('menu-open');
+        });
+    },
+    
     // Setup category toggle functionality
     setupCategoryToggle() {
         // Category item click handler
@@ -100,31 +135,37 @@ const App = {
         const $nextBtn = $('#productNext');
         
         let currentIndex = 2; // Start with third item as active (index 2)
-        const itemWidth = 300;
-        const activeWidth = 354;
-        const gap = 24; // var(--spacing-lg) is typically 1.5rem = 24px
+        const gap = 32; // var(--spacing-lg) = 2rem = 32px
+
+        function getItemSizes() {
+            const w = window.innerWidth;
+            if (w <= 767) return { itemWidth: 200, activeWidth: 240 };
+            if (w <= 991) return { itemWidth: 250, activeWidth: 280 };
+            return { itemWidth: 300, activeWidth: 354 };
+        }
         
         // Function to update carousel position and active item
         function updateCarousel() {
             // Update active class
             $productItems.removeClass('active');
             $productItems.eq(currentIndex).addClass('active');
+
+            const { itemWidth } = getItemSizes();
+            const isMobile = window.innerWidth <= 991;
             
-            // Calculate transform to show one full item + one half item to left of active
+            // Calculate transform to position the active item
             let translateX = 0;
-            
-            if (currentIndex === 0) {
-                // First item active, no offset needed
+
+            if (isMobile) {
+                // Mobile: active item starts at left edge
+                translateX = currentIndex * (itemWidth + gap);
+            } else if (currentIndex === 0) {
                 translateX = 0;
             } else if (currentIndex === 1) {
-                // Second item active, show half of first item
                 translateX = itemWidth / 2;
             } else {
-                // Third item or later active
-                // Show half of item at (currentIndex - 2) and full item at (currentIndex - 1)
-                translateX = itemWidth / 2; // Half of first visible item
-                
-                // Add widths of all items between first visible and active
+                // Desktop: show half of previous item to hint swiping
+                translateX = itemWidth / 2;
                 for (let i = currentIndex - 1; i > 0; i--) {
                     translateX += itemWidth + gap;
                 }

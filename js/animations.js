@@ -78,6 +78,12 @@ const Animations = {
         if (!CONFIG.features.enableParallax) return;
         
         $(window).on('scroll', Utils.throttle(() => {
+            // Disable parallax on mobile/tablet to prevent layout issues
+            if (window.innerWidth <= 991) {
+                $('.hero-image').css({ transform: '' });
+                return;
+            }
+
             const scrolled = $(window).scrollTop();
             
             // Parallax for hero section

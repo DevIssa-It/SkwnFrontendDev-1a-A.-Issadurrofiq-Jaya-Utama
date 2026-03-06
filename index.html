@@ -51,9 +51,8 @@
                         <span class="cart-count">0</span>
                     </button>
                     <button class="hamburger" id="hamburger" aria-label="Toggle navigation menu">
-                        <span></span>
-                        <span></span>
-                        <span></span>
+                        <i class="fa-solid fa-bars-staggered hamburger-open"></i>
+                        <i class="fa-solid fa-xmark hamburger-close"></i>
                     </button>
                 </div>
             </nav>
@@ -89,6 +88,7 @@
                         </div>
                     </div>
                     <div class="hero-image fade-in">
+                        <div class="hero-image-label">HIGHLIGHTED PRODUCT</div>
                         <div class="hero-image-placeholder">
                             <img src="assets/images/hero/image 64.svg" alt="Hero Image">
                         </div>
@@ -280,14 +280,11 @@
     <section class="newsletter" id="contact">
         <div class="container">
             <div class="newsletter-content">
-                <div class="newsletter-text">
-                    <h2>Subscribe to Our Newsletter</h2>
-                    <p>Get the latest updates on new products, special offers, and design inspiration.</p>
-                </div>
-                
+                <span class="newsletter-label">LIMITED DEALS</span>
+                <h2>Become a member and get 10% off of your first purchase</h2>
                 <form class="newsletter-form" id="newsletterForm">
-                    <input type="email" placeholder="Enter your email address" required>
-                    <button type="submit" class="btn btn-primary">Subscribe</button>
+                    <input type="email" placeholder="Enter your email here" required>
+                    <button type="submit" class="btn btn-primary"><i class="fa-regular fa-envelope"></i></button>
                 </form>
             </div>
         </div>
@@ -296,62 +293,48 @@
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
-            <div class="footer-content">
-                <div class="footer-column">
+            <div class="footer-grid">
+                <div class="footer-brand">
                     <div class="footer-logo">
-                        <i class="fas fa-couch"></i>
-                        <span>FurniStyle</span>
+                        <img src="assets/images/icons/logo-footer.svg" alt="Dekoor Logo">
                     </div>
-                    <p>Premium furniture for your perfect home. Quality, style, and comfort in every piece.</p>
-                    <div class="social-links">
-                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
-                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-                        <a href="#" aria-label="Pinterest"><i class="fab fa-pinterest"></i></a>
+                    <p class="footer-description">Dekoor is a furniture company created to fulfill the needs of family with aesthetic feeling in their furniture. Always pay attention to details and give clear communication for the customers. Priority of our design is comfortability.</p>
+                    <div class="footer-copyright">
+                        <span><i class="fa-regular fa-copyright"></i> Copyright 2022 Dekoor</span>
                     </div>
                 </div>
                 
-                <div class="footer-column">
-                    <h3>Quick Links</h3>
-                    <ul>
-                        <li><a href="#about">About Us</a></li>
-                        <li><a href="#products">Products</a></li>
-                        <li><a href="#categories">Categories</a></li>
-                        <li><a href="#testimonials">Testimonials</a></li>
-                    </ul>
+                <div class="footer-list">
+                    <div class="footer-links">
+                        <h3 class="footer-heading">Support</h3>
+                        <ul class="footer-list">
+                            <li><a href="#about">FAQ</a></li>
+                            <li><a href="#products">Shipping & Returns</a></li>
+                            <li><a href="#categories">Care guide</a></li>
+                            <li><a href="#testimonials">Redeem warranty</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-links">
+                        <h3 class="footer-heading">Social Media</h3>
+                        <ul class="footer-list">
+                            <li><a href="#">Instagram</a></li>
+                            <li><a href="#">Facebook</a></li>
+                            <li><a href="#">Twitter</a></li>
+                            <li><a href="#">TikTok</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-links">
+                        <h3 class="footer-heading">About Us</h3>
+                        <ul class="footer-list">
+                            <li><a href="#">Our story</a></li>
+                            <li><a href="#">Designer</a></li>
+                            <li><a href="#">Craftmanship</a></li>
+                            <li><a href="#">Sustainability</a></li>
+                        </ul>
+                    </div>
                 </div>
-                
-                <div class="footer-column">
-                    <h3>Customer Service</h3>
-                    <ul>
-                        <li><a href="#">Shipping Info</a></li>
-                        <li><a href="#">Returns</a></li>
-                        <li><a href="#">Warranty</a></li>
-                        <li><a href="#">FAQ</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-column">
-                    <h3>Contact Info</h3>
-                    <ul class="contact-info">
-                        <li>
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span>123 Furniture Street, Design City</span>
-                        </li>
-                        <li>
-                            <i class="fas fa-phone"></i>
-                            <span>+1 (555) 123-4567</span>
-                        </li>
-                        <li>
-                            <i class="fas fa-envelope"></i>
-                            <span>info@furnistyle.com</span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="footer-bottom">
-                <p>&copy; 2026 FurniStyle. All rights reserved.</p>
             </div>
         </div>
     </footer>
