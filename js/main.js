@@ -100,8 +100,8 @@ const App = {
         const $nextBtn = $('#productNext');
         
         let currentIndex = 2; // Start with third item as active (index 2)
-        const itemWidth = 320;
-        const activeWidth = 480;
+        const itemWidth = 300;
+        const activeWidth = 354;
         const gap = 24; // var(--spacing-lg) is typically 1.5rem = 24px
         
         // Function to update carousel position and active item
@@ -110,18 +110,22 @@ const App = {
             $productItems.removeClass('active');
             $productItems.eq(currentIndex).addClass('active');
             
-            // Calculate transform - items start from left (0)
-            // No centering, just align from left
+            // Calculate transform to show one full item + one half item to left of active
             let translateX = 0;
             
-            // Move carousel based on current index
-            for (let i = 0; i < currentIndex; i++) {
-                if (i === currentIndex - 1) {
-                    // Previous item before active
-                    translateX += itemWidth + gap;
-                } else if ($productItems.eq(i).hasClass('active')) {
-                    translateX += activeWidth + gap;
-                } else {
+            if (currentIndex === 0) {
+                // First item active, no offset needed
+                translateX = 0;
+            } else if (currentIndex === 1) {
+                // Second item active, show half of first item
+                translateX = itemWidth / 2;
+            } else {
+                // Third item or later active
+                // Show half of item at (currentIndex - 2) and full item at (currentIndex - 1)
+                translateX = itemWidth / 2; // Half of first visible item
+                
+                // Add widths of all items between first visible and active
+                for (let i = currentIndex - 1; i > 0; i--) {
                     translateX += itemWidth + gap;
                 }
             }

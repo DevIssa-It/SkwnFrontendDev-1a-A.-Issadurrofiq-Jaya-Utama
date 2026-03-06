@@ -747,7 +747,7 @@ section {
 .our-products {
     background: var(--bg-dark);
     color: var(--text-light);
-    padding: var(--spacing-3xl) 0;
+    padding: var(--spacing-xl);
 }
 
 .our-products .section-header {
@@ -760,23 +760,28 @@ section {
 .our-products .section-header-text {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-xs);
 }
 
 .our-products .section-subtitle {
     color: var(--primary-color);
+    font-weight: var(--font-weight-normal);
+    font-size: var(--font-size-2xl);
+    text-align: left;
 }
 
 .our-products .section-title {
-    color: var(--text-light);
+    color: var(--primary-color);
+    font-weight: var(--font-weight-bold);
+    font-size: var(--font-size-5xl);
     margin: 0;
+    text-align: left;
 }
 
 .our-products .btn-see-more {
-    padding: var(--spacing-sm) var(--spacing-lg);
-    background: transparent;
+    padding: var(--spacing-sm) 2.25rem;
+    background: var(--primary-color);
     border: 1px solid var(--text-light);
-    color: var(--text-light);
+    color: var(--text-dark);
     text-decoration: none;
     border-radius: var(--radius-md);
     transition: all 0.3s ease;
@@ -784,15 +789,18 @@ section {
 }
 
 .our-products .btn-see-more:hover {
-    background: var(--primary-color);
-    color: var(--text-primary);
+    background: var(--bg-dark);
+    color: var(--primary-color);
     border-color: var(--primary-color);
 }
 
 .product-carousel-container {
     position: relative;
     width: 100%;
-    margin-top: var(--spacing-xl);
+    padding-bottom: 36px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 .product-carousel {
@@ -812,13 +820,13 @@ section {
 }
 
 .product-item {
-    flex: 0 0 320px;
+    flex: 0 0 300px;
     transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     opacity: 0.7;
 }
 
 .product-item.active {
-    flex: 0 0 480px;
+    flex: 0 0 354px;
     opacity: 1;
     z-index: 1;
 }
@@ -829,11 +837,11 @@ section {
     border-radius: var(--radius-lg);
     overflow: hidden;
     background: var(--bg-secondary);
-    margin-bottom: var(--spacing-md);
+    position: relative;
 }
 
 .product-item.active .product-image-preview {
-    height: 520px;
+    height: 472px;
 }
 
 .product-image-preview img {
@@ -848,27 +856,37 @@ section {
 }
 
 .product-image-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: var(--spacing-lg);
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.4) 70%, transparent 100%);
     text-align: left;
-    padding-left: var(--spacing-sm);
 }
 
-.product-image-info .hero-price-tag {
-    font-size: var(--font-size-xl);
-    font-weight: var(--font-weight-bold);
-    color: var(--primary-color);
+.product-image-info .product-price-tag {
+    display: inline-block;
+    width: fit-content;
+    background: rgba(255, 255, 255, 0.5);
+    padding: 0.5rem var(--spacing-sm);
+    border-radius: var(--radius-lg);
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-normal);
+    color: var(--text-dark);
     margin-bottom: var(--spacing-xs);
 }
 
-.product-image-info .hero-furniture-name {
-    font-size: var(--font-size-lg);
-    font-weight: var(--font-weight-semibold);
+.product-image-info .product-name {
+    font-size: var(--font-size-5xl);
+    font-weight: var(--font-weight-normal);
     color: var(--text-light);
     margin: 0;
 }
 
 .carousel-nav-wrapper {
     position: absolute;
-    bottom: var(--spacing-lg);
+    bottom: 24px;
     right: max(var(--container-padding), calc((100vw - var(--container-max-width)) / 2));
     display: flex;
     gap: var(--spacing-md);
@@ -876,12 +894,11 @@ section {
 }
 
 .carousel-nav {
-    width: 48px;
-    height: 48px;
+    width: 56px;
+    height: 56px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: var(--text-light);
+    background: var(--primary-color);
+    color: var(--text-dark);
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -889,12 +906,13 @@ section {
     font-size: var(--font-size-xl);
     transition: all 0.3s ease;
     flex-shrink: 0;
+    -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
 }
 
 .carousel-nav:hover {
-    background: var(--primary-color);
-    color: var(--text-primary);
+    background: var(--bg-dark);
+    color: var(--primary-color);
     border-color: var(--primary-color);
     transform: scale(1.1);
 }
@@ -909,8 +927,8 @@ section {
 }
 
 .carousel-nav:disabled:hover {
-    background: rgba(255, 255, 255, 0.1);
-    color: var(--text-light);
+    background: var(--bg-dark);
+    color: var(--primary-color);
     transform: scale(1);
 }
 
