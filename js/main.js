@@ -1,6 +1,8 @@
 // Main Application Entry Point
 
 const App = {
+    cachedProducts: [],
+
     // Initialize application
     init() {
         console.log(`${CONFIG.app.name} v${CONFIG.app.version} - Initializing...`);
@@ -58,11 +60,25 @@ const App = {
     setupCategoryToggle() {
         // Category item click handler
         $('.category-item').on('click', function() {
-            // Remove active class from all items
             $('.category-item').removeClass('category-item-active');
-            
-            // Add active class to clicked item
             $(this).addClass('category-item-active');
+
+            // Update preview images from cached API products
+            const products = App.cachedProducts || [];
+            if (products.length === 0) return;
+
+            // Pick 3 products starting at offset based on which category was clicked
+            const categoryIndex = $('.category-item').index(this);
+            const $imgs = $('.categories-preview li img');
+            $imgs.each(function(i) {
+                const pick = products[(categoryIndex * 3 + i) % products.length];
+                if (pick && pick.image) {
+                    const $img = $(this);
+                    $img.animate({ opacity: 0 }, 200, function() {
+                        $img.attr('src', pick.image).animate({ opacity: 1 }, 300);
+                    });
+                }
+            });
         });
         
         // Category preview hover effect
@@ -87,7 +103,7 @@ const App = {
         });
     },
     
-    // Setup product carousel functionality - loads data from JSONPlaceholder API
+    // Setup product carousel functionality - loads data from MockAPI
     async setupProductCarousel() {
         const $productList = $('.product-list');
         const $prevBtn = $('#productPrev');
@@ -107,9 +123,12 @@ const App = {
             `).join('')
         );
 
-        // Fetch products from JSONPlaceholder API
+        // Fetch products from MockAPI
         const result = await API.getProducts(8);
         const products = result.success ? result.data : [];
+
+        // Cache products so other sections (e.g. category preview) can use them
+        App.cachedProducts = products;
 
         if (products.length === 0) {
             $productList.html('<li style="color:white;padding:2rem;opacity:0.6;">Could not load products.</li>');
