@@ -1,0 +1,13 @@
+# Products Images
+
+Tempatkan gambar produk furniture di folder ini.
+
+## Format:
+- JPG, PNG, atau WebP
+- Size: 600x600px minimum (square)
+- Max file size: 200KB
+
+## Naming Convention:
+- product-name-01.jpg
+- sofa-modern-01.jpg
+- bed-king-size-01.jpg

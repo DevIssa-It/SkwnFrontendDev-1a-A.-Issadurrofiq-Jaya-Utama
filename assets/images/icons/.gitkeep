@@ -1,0 +1,14 @@
+# Custom Icons
+
+Tempatkan custom icons di folder ini.
+
+## Files:
+- logo.png/svg
+- favicon.ico
+- logo-white.png (untuk dark background)
+- logo-black.png (untuk light background)
+
+## Format:
+- SVG (preferred untuk scalability)
+- PNG dengan transparent background
+- ICO untuk favicon

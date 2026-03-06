@@ -1,0 +1,21 @@
+# Custom Fonts
+
+Tempatkan custom fonts di folder ini jika tidak menggunakan Google Fonts CDN.
+
+## Format:
+- .woff2 (preferred - best compression)
+- .woff (fallback)
+- .ttf (fallback)
+
+## Usage:
+```css
+@font-face {
+    font-family: 'CustomFont';
+    src: url('../assets/fonts/customfont.woff2') format('woff2'),
+         url('../assets/fonts/customfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+```
+
+**Note**: Saat ini website menggunakan Google Fonts (Poppins & Playfair Display) via CDN.
