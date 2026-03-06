@@ -3,15 +3,15 @@
 const CONFIG = {
     // API Configuration
     api: {
-        // Using Fake Store API as a placeholder - can be replaced with actual furniture API
-        baseUrl: 'https://fakestoreapi.com',
+        // MockAPI.io - schema matches our furniture data format exactly
+        baseUrl: 'https://69ab28e1e051e9456fa3759f.mockapi.io/api/v1',
         endpoints: {
             products: '/products',
-            categories: '/products/categories',
-            productsByCategory: '/products/category'
+            categories: '/categories',
+            productsByCategory: '/products'
         },
-        // Backup/Mock data in case API fails
-        useMockData: false
+        // Fallback to mock data if API is unavailable
+        useMockData: true
     },
     
     // Application Settings

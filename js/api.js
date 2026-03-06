@@ -94,20 +94,41 @@ const API = {
         return result;
     },
     
-    // Transform product data from API to our format
+    // Transform product data - normalize MockAPI generated values
     transformProductData(products) {
-        return products.map((product, index) => ({
-            id: product.id,
-            name: product.title,
-            category: this.mapCategoryToFurniture(product.category),
-            price: product.price,
-            oldPrice: product.price * 1.3, // Add some variation
-            image: product.image,
-            rating: product.rating?.rate || 4.5,
-            reviews: product.rating?.count || Math.floor(Math.random() * 200) + 10,
-            badge: index % 3 === 0 ? 'Sale' : (index % 5 === 0 ? 'New' : null),
-            description: product.description
-        }));
+        const badgeLabels = ['Sale', 'New', 'Hot'];
+        return products.map((product, index) => {
+            // rating: clamp to 0–5 range
+            const rawRating = parseFloat(product.rating) || 4.5;
+            const rating = rawRating > 5
+                ? parseFloat((1 + (rawRating % 40) / 10).toFixed(1))
+                : rawRating;
+
+            // badge: if number/random word, map to Sale/New or null
+            const badgeRaw = product.badge;
+            const badge = (typeof badgeRaw === 'number')
+                ? (badgeRaw % 4 === 0 ? 'Sale' : badgeRaw % 7 === 0 ? 'New' : null)
+                : (badgeLabels.includes(badgeRaw) ? badgeRaw : null);
+
+            // image: strip all query params from picsum URL (removes blur, grayscale etc.)
+            const rawImage = product.image || '';
+            const image = rawImage.includes('picsum.photos')
+                ? rawImage.split('?')[0]
+                : rawImage;
+
+            return {
+                id: product.id,
+                name: product.name,
+                category: product.category,
+                price: parseFloat(product.price) || 0,
+                oldPrice: product.oldPrice ? parseFloat(product.oldPrice) : null,
+                image,
+                rating: Math.min(5, Math.max(1, rating)),
+                reviews: parseInt(product.reviews) || 0,
+                badge,
+                description: product.description
+            };
+        });
     },
     
     // Transform category data

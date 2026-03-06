@@ -87,15 +87,47 @@ const App = {
         });
     },
     
-    // Setup product carousel functionality
-    setupProductCarousel() {
+    // Setup product carousel functionality - loads data from JSONPlaceholder API
+    async setupProductCarousel() {
         const $productList = $('.product-list');
-        const $productItems = $('.product-item');
         const $prevBtn = $('#productPrev');
         const $nextBtn = $('#productNext');
-        
-        let currentIndex = 2; // Start with third item as active (index 2)
-        const gap = 32; // var(--spacing-lg) = 2rem = 32px
+
+        let currentIndex = 2;
+        const gap = 32;
+
+        // Show skeleton loading state while API call is in-flight
+        $productList.html(
+            Array(5).fill(`
+                <li class="product-item">
+                    <div class="product-image-preview" style="display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.05);">
+                        <i class="fas fa-spinner fa-spin" style="font-size:2rem;color:var(--primary-color);opacity:0.5;"></i>
+                    </div>
+                </li>
+            `).join('')
+        );
+
+        // Fetch products from JSONPlaceholder API
+        const result = await API.getProducts(8);
+        const products = result.success ? result.data : [];
+
+        if (products.length === 0) {
+            $productList.html('<li style="color:white;padding:2rem;opacity:0.6;">Could not load products.</li>');
+            return;
+        }
+
+        // Render carousel items from API data
+        $productList.html(products.map((product, i) => `
+            <li class="product-item${i === 2 ? ' active' : ''}">
+                <div class="product-image-preview">
+                    <img src="${product.image || 'assets/images/products/placeholder.svg'}" alt="${product.name}" loading="lazy">
+                    <div class="product-image-info">
+                        <div class="product-price-tag">$${product.price}</div>
+                        <h3 class="product-name">${product.name}</h3>
+                    </div>
+                </div>
+            </li>
+        `).join(''));
 
         function getItemSizes() {
             const w = window.innerWidth;
@@ -103,71 +135,50 @@ const App = {
             if (w <= 991) return { itemWidth: 250, activeWidth: 280 };
             return { itemWidth: 300, activeWidth: 354 };
         }
-        
-        // Function to update carousel position and active item
+
         function updateCarousel() {
-            // Update active class
-            $productItems.removeClass('active');
-            $productItems.eq(currentIndex).addClass('active');
+            const $items = $('.product-item');
+            $items.removeClass('active');
+            $items.eq(currentIndex).addClass('active');
 
             const { itemWidth } = getItemSizes();
             const isMobile = window.innerWidth <= 991;
-            
-            // Calculate transform to position the active item
             let translateX = 0;
 
             if (isMobile) {
-                // Mobile: active item starts at left edge
                 translateX = currentIndex * (itemWidth + gap);
             } else if (currentIndex === 0) {
                 translateX = 0;
             } else if (currentIndex === 1) {
                 translateX = itemWidth / 2;
             } else {
-                // Desktop: show half of previous item to hint swiping
                 translateX = itemWidth / 2;
                 for (let i = currentIndex - 1; i > 0; i--) {
                     translateX += itemWidth + gap;
                 }
             }
-            
-            // Apply negative transform to shift items left
+
             $productList.css('transform', `translateX(-${translateX}px)`);
-            
-            // Update button states
             $prevBtn.prop('disabled', currentIndex === 0);
-            $nextBtn.prop('disabled', currentIndex === $productItems.length - 1);
+            $nextBtn.prop('disabled', currentIndex === $('.product-item').length - 1);
         }
-        
-        // Previous button click
+
         $prevBtn.on('click', function() {
-            if (currentIndex > 0) {
-                currentIndex--;
-                updateCarousel();
-            }
+            if (currentIndex > 0) { currentIndex--; updateCarousel(); }
         });
-        
-        // Next button click
+
         $nextBtn.on('click', function() {
-            if (currentIndex < $productItems.length - 1) {
-                currentIndex++;
-                updateCarousel();
-            }
+            if (currentIndex < $('.product-item').length - 1) { currentIndex++; updateCarousel(); }
         });
-        
-        // Click on product item to make it active
-        $productItems.on('click', function() {
+
+        $productList.on('click', '.product-item', function() {
             currentIndex = $(this).index();
             updateCarousel();
         });
-        
-        // Initialize carousel
+
         updateCarousel();
-        
-        // Update on window resize
-        $(window).on('resize', Utils.debounce(() => {
-            updateCarousel();
-        }, 300));
+
+        $(window).on('resize', Utils.debounce(() => { updateCarousel(); }, 300));
     },
     
     // Handle window resize
