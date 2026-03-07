@@ -36,11 +36,6 @@ Thumbs.db
 *.temp
 .cache/
 
-# Documentation files (keep only README.md in root)
-QUICK_START.md
-assets/CARA_PAKAI_GAMBAR.md
-assets/IMAGE_SOURCES.md
-assets/README.md
 
 # Optional: Uncomment if you want to ignore these
 # *.map
