@@ -30,24 +30,33 @@ const Cart = {
     
     // Add item to cart
     addItem(product, quantity = 1) {
+        // Validate input
+        if (!product || !product.id || quantity < 1) {
+            Utils.showToast('Invalid product data', 'error');
+            return false;
+        }
+        
         const existingItem = this.items.find(item => item.id === product.id);
         
         if (existingItem) {
             existingItem.quantity += quantity;
+            Utils.showToast('Item quantity updated', 'success');
         } else {
             this.items.push({
                 id: product.id,
-                name: product.name,
-                price: product.price,
+                name: Utils.sanitizeHTML(product.name),
+                price: parseFloat(product.price) || 0,
                 image: product.image,
                 category: product.category,
                 quantity: quantity
             });
+            Utils.showToast('Item added to cart', 'success');
         }
         
         this.saveToStorage();
         this.updateUI();
         this.animateCartIcon();
+        return true;
     },
     
     // Remove item from cart
@@ -149,28 +158,31 @@ const Cart = {
     
     // Create cart item HTML
     createCartItemHTML(item) {
+        const safeName = Utils.escapeHTML(item.name);
+        const safeImage = Utils.escapeHTML(item.image || '');
+        
         return `
             <div class="cart-item" data-id="${item.id}">
                 <div class="cart-item-image">
                     ${item.image 
-                        ? `<img src="${item.image}" alt="${item.name}">`
+                        ? `<img src="${safeImage}" alt="${safeName}" loading="lazy">`
                         : `<div class="product-placeholder"><i class="fas fa-couch"></i></div>`
                     }
                 </div>
                 <div class="cart-item-info">
-                    <div class="cart-item-name">${Utils.truncateText(item.name, 40)}</div>
+                    <div class="cart-item-name">${Utils.truncateText(safeName, 40)}</div>
                     <div class="cart-item-price">${Utils.formatCurrency(item.price)}</div>
                     <div class="cart-item-quantity">
-                        <button class="quantity-btn decrease-btn" data-id="${item.id}">
+                        <button class="quantity-btn decrease-btn" data-id="${item.id}" aria-label="Decrease quantity">
                             <i class="fas fa-minus"></i>
                         </button>
                         <span class="quantity-value">${item.quantity}</span>
-                        <button class="quantity-btn increase-btn" data-id="${item.id}">
+                        <button class="quantity-btn increase-btn" data-id="${item.id}" aria-label="Increase quantity">
                             <i class="fas fa-plus"></i>
                         </button>
                     </div>
                 </div>
-                <button class="cart-item-remove" data-id="${item.id}">
+                <button class="cart-item-remove" data-id="${item.id}" aria-label="Remove item">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
@@ -225,8 +237,24 @@ const Cart = {
     
     // Load cart from localStorage
     loadFromStorage() {
-        const savedCart = Utils.storage.get(CONFIG.storage.cart, []);
-        this.items = savedCart;
+        try {
+            const savedCart = Utils.storage.get(CONFIG.storage.cart, []);
+            // Validate cart data
+            if (Array.isArray(savedCart)) {
+                this.items = savedCart.filter(item => 
+                    item && 
+                    item.id && 
+                    typeof item.price === 'number' && 
+                    typeof item.quantity === 'number' &&
+                    item.quantity > 0
+                );
+            } else {
+                this.items = [];
+            }
+        } catch (error) {
+            console.error('Failed to load cart:', error);
+            this.items = [];
+        }
     }
 };
 

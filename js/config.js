@@ -18,6 +18,7 @@ const CONFIG = {
     app: {
         name: 'FurniStyle',
         version: '1.0.0',
+        debug: false, // Set to false in production
         itemsPerPage: 12,
         loadMoreIncrement: 6,
         animationDuration: 300,

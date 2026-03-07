@@ -5,25 +5,33 @@ const App = {
 
     // Initialize application
     init() {
-        console.log(`${CONFIG.app.name} v${CONFIG.app.version} - Initializing...`);
+        if (CONFIG.app.debug) {
+            console.log(`${CONFIG.app.name} v${CONFIG.app.version} - Initializing...`);
+        }
         
-        // Initialize all modules
-        this.initializeModules();
-        
-        // Setup global event listeners
-        this.setupGlobalListeners();
-        
-        // Setup category toggle
-        this.setupCategoryToggle();
-        
-        // Setup product carousel
-        this.setupProductCarousel();
-        
-        // Setup newsletter form
-        this.setupNewsletterForm();
-        
-        // Log initialization complete
-        console.log(`${CONFIG.app.name} - Initialization complete!`);
+        try {
+            // Initialize all modules
+            this.initializeModules();
+            
+            // Setup global event listeners
+            this.setupGlobalListeners();
+            
+            // Setup category toggle
+            this.setupCategoryToggle();
+            
+            // Setup product carousel
+            this.setupProductCarousel();
+            
+            // Setup newsletter form
+            this.setupNewsletterForm();
+            
+            if (CONFIG.app.debug) {
+                console.log(`${CONFIG.app.name} - Initialization complete!`);
+            }
+        } catch (error) {
+            console.error('Initialization error:', error);
+            Utils.showToast('Failed to initialize application', 'error');
+        }
     },
     
     // Initialize all modules
@@ -124,8 +132,13 @@ const App = {
         );
 
         // Fetch products from MockAPI
-        const result = await API.getProducts(8);
-        const products = result.success ? result.data : [];
+        let products = [];
+        try {
+            const result = await API.getProducts(8);
+            products = result.success ? result.data : [];
+        } catch (error) {
+            console.error('Failed to load products:', error);
+        }
 
         // Cache products so other sections (e.g. category preview) can use them
         App.cachedProducts = products;
@@ -136,17 +149,21 @@ const App = {
         }
 
         // Render carousel items from API data
-        $productList.html(products.map((product, i) => `
+        $productList.html(products.map((product, i) => {
+            const safeName = Utils.escapeHTML(product.name);
+            const safeImage = Utils.escapeHTML(product.image || 'assets/images/products/placeholder.svg');
+            
+            return `
             <li class="product-item${i === 2 ? ' active' : ''}">
                 <div class="product-image-preview">
-                    <img src="${product.image || 'assets/images/products/placeholder.svg'}" alt="${product.name}" loading="lazy">
+                    <img src="${safeImage}" alt="${safeName}" loading="lazy">
                     <div class="product-image-info">
-                        <div class="product-price-tag">$${product.price}</div>
-                        <h3 class="product-name">${product.name}</h3>
+                        <div class="product-price-tag">$${product.price.toFixed(2)}</div>
+                        <h3 class="product-name">${safeName}</h3>
                     </div>
                 </div>
             </li>
-        `).join(''));
+        `}).join(''));
 
         function getItemSizes() {
             const w = window.innerWidth;
@@ -221,7 +238,7 @@ const App = {
             
             const $form = $(this);
             const $input = $form.find('input[type="email"]');
-            const email = $input.val().trim();
+            const email = Utils.sanitizeHTML($input.val().trim());
             
             // Validate email
             if (!Utils.isValidEmail(email)) {
@@ -230,21 +247,27 @@ const App = {
                 return;
             }
             
+            // Check if already subscribed
+            const subscriptions = Utils.storage.get('newsletter_subscriptions', []);
+            if (subscriptions.some(sub => sub.email === email)) {
+                Utils.showToast('This email is already subscribed', 'info');
+                return;
+            }
+            
             // Simulate API call
             const $button = $form.find('button');
-            const originalText = $button.text();
+            const $buttonIcon = $button.find('i');
             
             $button.prop('disabled', true).addClass('loading');
-            $button.text('Subscribing...');
+            $buttonIcon.removeClass('fa-envelope').addClass('fa-spinner fa-spin');
             
             setTimeout(() => {
                 Utils.showToast('Thank you for subscribing!', 'success');
                 $input.val('');
                 $button.prop('disabled', false).removeClass('loading');
-                $button.text(originalText);
+                $buttonIcon.removeClass('fa-spinner fa-spin').addClass('fa-envelope');
                 
                 // Store subscription in localStorage
-                const subscriptions = Utils.storage.get('newsletter_subscriptions', []);
                 subscriptions.push({
                     email: email,
                     date: new Date().toISOString()

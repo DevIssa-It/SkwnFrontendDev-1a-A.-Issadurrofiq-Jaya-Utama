@@ -1,0 +1,47 @@
+# Dependencies
+node_modules/
+bower_components/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Build output
+dist/
+build/
+*.min.css
+*.min.js
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Documentation files (keep only README.md in root)
+QUICK_START.md
+assets/CARA_PAKAI_GAMBAR.md
+assets/IMAGE_SOURCES.md
+assets/README.md
+
+# Optional: Uncomment if you want to ignore these
+# *.map
+# package-lock.json

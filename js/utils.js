@@ -259,6 +259,25 @@ const Utils = {
         return regex.test(email);
     },
     
+    // Sanitize HTML to prevent XSS
+    sanitizeHTML(str) {
+        const temp = document.createElement('div');
+        temp.textContent = str;
+        return temp.innerHTML;
+    },
+    
+    // Escape HTML entities
+    escapeHTML(str) {
+        const map = {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#039;'
+        };
+        return str.replace(/[&<>"']/g, m => map[m]);
+    },
+    
     // Get URL parameters
     getUrlParams() {
         const params = {};

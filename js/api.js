@@ -96,6 +96,8 @@ const API = {
     
     // Transform product data - normalize MockAPI response
     transformProductData(products) {
+        if (!Array.isArray(products)) return [];
+        
         return products.map(product => {
             // Strip query params from picsum URLs (removes blur, grayscale, etc.)
             const rawImage = product.image || '';
@@ -105,11 +107,11 @@ const API = {
 
             return {
                 id: product.id,
-                name: product.name,
-                category: product.category,
+                name: Utils.sanitizeHTML(product.name || 'Unnamed Product'),
+                category: product.category || 'uncategorized',
                 price: parseFloat(product.price) || 0,
                 image,
-                description: product.description
+                description: Utils.sanitizeHTML(product.description || '')
             };
         });
     },
