@@ -39,7 +39,7 @@ Install ekstensi **Live Server** di VS Code, klik kanan pada `index.html` → **
 
 ## 🌐 Demo
 
-> Link akan tersedia setelah deploy ke hosting
+(https://dekoor-furniture-skwn.vercel.app/)
 
 ## 📁 Struktur Project
 
